@@ -1,0 +1,26 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+const listingSchema = new Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+    },
+    image: {
+        filename: { type: String },
+        url: {
+            type: String,
+            default: "https://tse4.mm.bing.net/th/id/OIP.tYYh4cqQ3OGHjLEuaaMoXAHaEx?cb=iwc2&rs=1&pid=ImgDetMain",
+            set: (v) => v === "" ? "https://tse4.mm.bing.net/th/id/OIP.tYYh4cqQ3OGHjLEuaaMoXAHaEx?cb=iwc2&rs=1&pid=ImgDetMain" : v,
+        }
+    },
+    price: Number,
+    location: String,
+    country: String,
+});
+
+const Listing = mongoose.model("Listing", listingSchema);
+module.exports = Listing;
