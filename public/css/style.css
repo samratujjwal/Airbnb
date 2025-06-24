@@ -100,3 +100,90 @@ body {
     background-color: #fe424d !important;
     border: navy;
 }
+
+
+/* Stylish Review Section */
+.card .review-section {
+    padding: 1.5rem;
+    background: #fefefe;
+    border-top: 2px dashed #ccc;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.review-section h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
+
+.review-section form label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #495057;
+}
+
+.review-section input[type="range"] {
+    width: 100%;
+    accent-color: #0d6efd;
+    margin-bottom: 1.2rem;
+}
+
+.review-section textarea {
+    width: 100%;
+    resize: vertical;
+    padding: 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.review-section button {
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.review-section button:hover {
+    background: #0b5ed7;
+}
+
+/* All Reviews Section Styling */
+.card-subtitle {
+    font-size: 0.95rem;
+    color: #ffc107;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #495057;
+}
+
+.review-card {
+    background: linear-gradient(135deg, #fffcea, #f3f8ff);
+    border: 1px solid #dee2e6;
+    border-left: 4px solid #ffc107;
+    border-radius: 0.6rem;
+    transition: transform 0.2s ease;
+}
+
+.review-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.review-card .card-subtitle {
+    color: #ffb300;
+    font-weight: 600;
+}
+
+.review-card .card-text {
+    color: #343a40;
+    font-size: 1rem;
+}

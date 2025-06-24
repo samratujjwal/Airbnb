@@ -7,7 +7,8 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError");
-const { listingSchema } = require("./schema.js");
+const { listingSchema, reviewSchema } = require("./schema.js");
+const Review = require("./models/review.js");
 main().then((res) => {
     console.log("Connected to DB");
 }).catch(err => console.log(err));
@@ -27,6 +28,24 @@ app.get("/", (req, res) => {
     res.send("Hello I am Root Path");
 });
 
+const validateListing = (req, res, next) => {
+    let { error } = listingSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+}
+const validateReview = (req, res, next) => {
+    let { error } = reviewSchema.validate(req.body);
+    if (error) {
+        let errMsg = error.details.map((el) => el.message).join(",");
+        throw new ExpressError(400, errMsg);
+    } else {
+        next();
+    }
+}
 ////////////////    INDEX ROUTE     //////////////////////
 app.get("/listings", async (req, res) => {
     let allListing = await Listing.find({})
@@ -42,7 +61,7 @@ app.get("/listings/new", (req, res) => {
 ////////////////// SHOW ROUTE ////////////////////////
 app.get("/listings/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id);
+    const listing = await Listing.findById(id).populate("reviews");
     res.render("./listings/show.ejs", { listing });
 }));
 
@@ -85,6 +104,17 @@ app.delete("/listings/:id", async (req, res) => {
     console.log(deletedListing);
     res.redirect("/listings");
 });
+
+///////////////   Reviews Route    ///////////////
+app.post("/listings/:id/review", validateReview, wrapAsync(async (req, res) => {
+    let listings = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
+    listings.reviews.push(newReview);
+    await newReview.save();
+    await listings.save();
+    console.log("New Review Saved");
+    res.redirect(`/listings/${listings._id}`);
+}));
 // app.get("/testlisting", async (req, res) => {
 //     let sampleListing = new Listing({
 //         title: "My home",
