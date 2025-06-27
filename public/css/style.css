@@ -187,3 +187,14 @@ body {
     color: #343a40;
     font-size: 1rem;
 }
+
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #ff9800;
+}
+
+.btn-outline-warning:hover {
+    background-color: #ffcc00;
+    color: #fff;
+    border-color: #ffcc00;
+}
