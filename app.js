@@ -6,6 +6,8 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 main().then((res) => {
     console.log("Connected to DB");
@@ -14,6 +16,29 @@ main().then((res) => {
 async function main() {
     await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
 }
+app.get("/", (req, res) => {
+    res.send("Hello I am Root Path");
+});
+
+const sessionOptions = {
+    secret: "SupersecretcodeofmymajorProject",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+    },
+};
+// Route wale se pehle use karna hota hai kyoki ise ham route ki help se hi use karne wale h
+app.use(session(sessionOptions));
+app.use(flash());
+// middleware for flash 
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+})
+
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
@@ -21,12 +46,9 @@ app.use(express.json());
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "./public")));
+
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
-
-app.get("/", (req, res) => {
-    res.send("Hello I am Root Path");
-});
 
 // app.get("/testlisting", async (req, res) => {
 //     let sampleListing = new Listing({

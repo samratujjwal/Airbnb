@@ -101,6 +101,10 @@ body {
     border: navy;
 }
 
+.listings-wrapper {
+    display: flex;
+    justify-content: center;
+}
 
 /* Stylish Review Section */
 .card .review-section {
