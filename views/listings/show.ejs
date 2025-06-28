@@ -6,6 +6,9 @@
                 <h2>Listing Details</h2>
                 <img src="<%= listing.image.url %>" class="card-img-top" alt="Listing Image">
                 <div class="card-body">
+                    <p class="card-text">Owned By:
+                        <%=listing.owner.username%>
+                    </p>
                     <h5 class="card-title">
                         <%= listing.title %>
                     </h5>
@@ -17,10 +20,12 @@
                     <p>
                         <%= listing.location %>, <%= listing.country %>
                     </p>
+
                     <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary">Edit Listing</a>
                     <form method="post" action="/listings/<%= listing._id %>?_method=Delete" class="d-inline">
                         <button class="btn btn-danger">Delete This Listing</button>
                     </form>
+
                 </div>
 
                 <br>
