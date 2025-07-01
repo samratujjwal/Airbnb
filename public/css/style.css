@@ -75,7 +75,15 @@ body {
 .card-text p {
     font-weight: 400 !important;
 }
-
+.card {
+  word-wrap: break-word;
+  overflow: hidden;
+  min-height: 100%;
+}
+.card-img-top {
+  object-fit: cover;
+  height: 200px;
+}
 .listing-link {
 
     text-decoration: none !important;
@@ -102,7 +110,7 @@ body {
 }
 
 .listings-wrapper {
-    display: flex;
+    /* display: flex; */
     justify-content: center;
 }
 
@@ -201,4 +209,12 @@ body {
     background-color: #ffcc00;
     color: #fff;
     border-color: #ffcc00;
+}
+
+#map {
+    height: 100px;
+    width: 100%;
+    padding-bottom: 60px;
+    box-sizing: border-box;
+
 }

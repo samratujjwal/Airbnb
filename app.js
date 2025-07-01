@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV != "production") {
+    require('dotenv').config();
+}
 const express = require("express");
 const app = express();
 const mongoose = require('mongoose');
@@ -10,24 +13,39 @@ const reviewsRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-main().then((res) => {
-    console.log("Connected to DB");
-}).catch(err => console.log(err));
+const dbUrl=process.env.ATLASDB_URL;
 
 async function main() {
-    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+    await mongoose.connect(
+        dbUrl,
+        {serverSelectionTimeoutMS: 20000,}
+    );
 }
-app.get("/", (req, res) => {
-    res.send("Hello I am Root Path");
+main().then((res) => {
+    console.log("Connected to DB");
+}).catch(err => console.log("DB connection error",err));
+
+const store=MongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret:process.env.SECRET,
+    },
+    touchAfter:24*60*60,
+});
+
+store.on("error",()=>{
+    console.log("ERROR in MONGO SESSION STORE",err);
 });
 
 const sessionOptions = {
-    secret: "SupersecretcodeofmymajorProject",
+    store,
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
     cookie: {
@@ -49,19 +67,10 @@ passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
-    res.locals.currUser = req.user;
+    res.locals.currUser = req.user;    
     next();
 })
-// Demo User
-// app.get("/demouser", async (req, res) => {
-//     let fakeUser = new User({
-//         email: "student@gmail.com",
-//         username: "Ujjwal45",
-//     });
 
-//     let registeredUser = await User.register(fakeUser, "password");
-//     res.send(registeredUser);
-// });
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -75,28 +84,7 @@ app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewsRouter);
 app.use("/", userRouter);
 
-// app.get("/testlisting", async (req, res) => {
-//     let sampleListing = new Listing({
-//         title: "My home",
-//         description: "By the village near gonda",
-//         price: 12000,
-//         location: "Gonda , Uttar Pradesh",
-//         country: "India",
-//     });
-//     await sampleListing.save();
-//     console.log("Sample Saved");
-//     res.send("Successfulll")
-// });
 
-// app.use((err, req, res, next) => {
-//     res.send("Something Went Wrong!");
-// });
-
-
-
-// app.all("*", (req, res, next) => {
-//     next(new ExpressError(404, "Page Not Found"));
-// });
 app.use((err, req, res, next) => {
     let { statusCode = 500, message = "Something Went Wrong" } = err;
     res.render("error.ejs", { err });
@@ -106,20 +94,3 @@ app.use((err, req, res, next) => {
 app.listen(8080, () => {
     console.log("App listening on port 8080:");
 });
-
-////////////////  METHOD 1  /////////////////////////
-// let { title, description, url, price, location, country } = req.body;
-// let newlisting = {
-//     title: title,
-//     description: description,
-//     image: {
-//         filename: "listingimage",
-//         url: url
-//     },
-//     price: price,
-//     location: location,
-//     country: country,
-// }
-// await Listing.insertOne(newlisting);
-/////////////////////  METHOD 2  ///////////////////
-// ham new.ejs me name ko hi java object bana denge aur saare name aur value usi me store
