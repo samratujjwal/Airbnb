@@ -90,6 +90,9 @@ app.use((err, req, res, next) => {
     res.render("error.ejs", { err });
     //res.status(statusCode).send(message);
 });
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 app.listen(8080, () => {
     console.log("App listening on port 8080:");
