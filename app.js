@@ -23,8 +23,8 @@ const dbUrl=process.env.ATLASDB_URL;
 
 async function main() {
     await mongoose.connect(
-        //dbUrl,
-        "mongodb://localhost:27017/wanderlust",
+        dbUrl,
+        //"mongodb://localhost:27017/wanderlust",
         {serverSelectionTimeoutMS: 20000,}
     );
 }
