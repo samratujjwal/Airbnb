@@ -28,10 +28,27 @@
                             <input type="number" id="price" name="listing[price]" class="form-control" required>
                             <div class="invalid-feedback">Enter valid Price</div>
                         </div>
-                        <div class="mb-3 col-md-8">
+                        <div class="mb-3 col-md-4">
                             <label for="country" class="form-label">Enter the country</label>
                             <input type="text" id="country" name="listing[country]" class="form-control" required>
                             <div class="invalid-feedback">Enter valid Country name</div>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="category"  class="form-label">Select Category</label>
+                            <select id="category" name="listing[category]" class="form-select form-control" required>
+                                <option value="">-- Select a category --</option>
+                                <option value="Beach">Rooms</option>
+                                <option value="Mountain">Mountain</option>
+                                <option value="City">City</option>
+                                <option value="Village">Village</option>
+                                <option value="Historical">Historical</option>
+                                <option value="Camping">Camping</option>
+                                <option value="Luxury">Luxury</option>
+                                <option value="Budget">Budget</option>
+                                <option value="Farm">Farm</option>
+                                <option value="Iconic Cities">Iconic Cities</option>
+                                <option value="Castles">Castles</option>
+                            </select>
                         </div>
                     </div>
 

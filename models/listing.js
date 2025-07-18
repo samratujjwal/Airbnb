@@ -10,7 +10,9 @@ const listingSchema = new Schema({
         type: String,
     },
     image: {
-        filename: { type: String },
+        filename: { type: String,
+            default:"Deafult"
+         },
         url: {
             type: String,
             default: "https://tse4.mm.bing.net/th/id/OIP.tYYh4cqQ3OGHjLEuaaMoXAHaEx?cb=iwc2&rs=1&pid=ImgDetMain",
@@ -32,15 +34,21 @@ const listingSchema = new Schema({
     },
     geometry: {
         type: {
-            type: String, // Don't do `{ location: { type: String } }`
-            enum: ['Point'], // 'location.type' must be 'Point'
+            type: String, 
+            enum: ['Point'],
             required: true
         },
         coordinates: {
             type: [Number],
             required: true
         }
+    },
+    category: {
+        type: String,
+        enum: ['Beach', 'Mountain', 'City', 'Village', 'Historical', 'Camping', 'Luxury', 'Budget','Iconic Cities','Rooms','Farm','Castles'],
+        required: true
     }
+
 });
 
 listingSchema.post("findOneAndDelete", async (listing) => {

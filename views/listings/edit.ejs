@@ -41,6 +41,31 @@
                                 class="form-control" required>
                             <div class="invalid-feedback">Country name should be valid</div>
                         </div>
+                        <div class="mb-3 col-md-4">
+                            <label for="category" class="form-label">Select Category</label>
+                            <select id="category" name="listing[category]" class="form-select form-control" required>
+                                <option value="">-- Select a category --</option>
+                                <option value="Beach" <%=listing.category==="Beach" ? "selected" : "" %>>Rooms</option>
+                                <option value="Mountain" <%=listing.category==="Mountain" ? "selected" : "" %>>Mountain
+                                </option>
+                                <option value="City" <%=listing.category==="City" ? "selected" : "" %>>City</option>
+                                <option value="Village" <%=listing.category==="Village" ? "selected" : "" %>>Village
+                                </option>
+                                <option value="Historical" <%=listing.category==="Historical" ? "selected" : "" %>
+                                    >Historical</option>
+                                <option value="Camping" <%=listing.category==="Camping" ? "selected" : "" %>>Camping
+                                </option>
+                                <option value="Luxury" <%=listing.category==="Luxury" ? "selected" : "" %>>Luxury
+                                </option>
+                                <option value="Budget" <%=listing.category==="Budget" ? "selected" : "" %>>Budget
+                                </option>
+                                <option value="Farm" <%=listing.category==="Farm" ? "selected" : "" %>>Farm</option>
+                                <option value="Iconic Cities" <%=listing.category==="Iconic Cities" ? "selected" : "" %>
+                                    >Iconic Cities</option>
+                                <option value="Castles" <%=listing.category==="Castles" ? "selected" : "" %>>Castles
+                                </option>
+                            </select>
+                        </div>
                     </div>
 
 

@@ -7,7 +7,7 @@ maptilerClient.config.fetch = fetch;
 
 maptilerClient.config.apiKey = mapToken;
 module.exports.index = async (req, res) => {
-    let allListing = await Listing.find({})
+    let allListing = await Listing.find({});
     res.render("./listings/index.ejs", { allListing });
 };
 
@@ -28,6 +28,7 @@ module.exports.showListing = async (req, res) => {
 
 module.exports.createListing = async (req, res) => {
     //////////////////////
+    //res.send(req.body);
     const result = await maptilerClient.geocoding.forward(req.body.listing.location);
     let url = req.file.path;
     let filename = req.file.filename;
@@ -38,8 +39,9 @@ module.exports.createListing = async (req, res) => {
         type: "Point",
         coordinates: result.features[0].center
     };
+    newlisting.category=req.body.listing.category;
     let savedListing = await newlisting.save();
-    //console.log(savedListing);
+    console.log(savedListing);
     req.flash("success", "New Listing Added");
     res.redirect("/listings");
 };
@@ -62,7 +64,9 @@ module.exports.updateListing = async (req, res) => {
     if (typeof req.file !== "undefined") {
         let url = req.file.path;
         let filename = req.file.filename;
+        //let {category}=req.body;
         listing.image = { url, filename };
+        listing.category=req.body.listing.category;
         await listing.save();
     }
     req.flash("success", "Listing Updated !");
@@ -75,4 +79,9 @@ module.exports.destroyListing = async (req, res) => {
     console.log(deletedListing);
     req.flash("success", "Listing Deleted !");
     res.redirect("/listings");
+};
+module.exports.renderCategory=async (req,res)=>{
+    let {category}=req.params;
+     let allListing = await Listing.find({category:category});
+    res.render("./listings/showCategory",{allListing,category});
 };
